@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: wordpress-ingress
+  labels:
+    app: wordpress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: wordpress.k8s.mediacloud.lab
+    http:
+      paths:
+      - path: "/"
+        backend:
+          serviceName: wordpress
+          servicePort: 80

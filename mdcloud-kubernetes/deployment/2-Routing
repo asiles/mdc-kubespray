@@ -1,0 +1,77 @@
+Para poder navegar:
+
+#### DESPLIEGUE ####
+
+1. Crear namespace y Service account
+
+    kubectl  --kubeconfig ~/terraform-vsphere-kubespray/config/admin.conf apply -f files/nginx-ingress-controller-ns-and-sa.yaml
+
+2. Crear Secret
+
+    kubectl  --kubeconfig ~/terraform-vsphere-kubespray/config/admin.conf apply -f files/nginx-ingress-controller-default-server-secret.yaml
+
+3. Crear ConfigMap
+
+    kubectl  --kubeconfig ~/terraform-vsphere-kubespray/config/admin.conf apply -f files/nginx-ingress-controller-nginx-config.yaml
+
+4. Configurar RBAC
+
+    kubectl  --kubeconfig ~/terraform-vsphere-kubespray/config/admin.conf apply -f files/nginx-ingress-controller-rbac.yaml
+
+5. Desplegar el Ingress Controller
+
+    kubectl  --kubeconfig ~/terraform-vsphere-kubespray/config/admin.conf apply -f files/nginx-ingress-controller-nginx-ingress.yaml
+
+
+6. Crear el NodePort
+
+    kubectl  --kubeconfig ~/terraform-vsphere-kubespray/config/admin.conf apply -f files/nginx-ingress-controller-nodeport.yaml
+
+
+
+Configs en el HA Proxy (en los dos /etc/haproxy):
+
+    frontend kubernetes-apps-http
+            bind 10.0.1.20:80
+            option tcplog
+            mode tcp
+            default_backend kubernetes-master-nodes-apps-http
+
+    backend kubernetes-master-nodes-apps-http
+            mode tcp
+            balance roundrobin
+            option tcp-check
+
+            server mdclab-k8s-master-0 10.0.1.21:30080 check fall 3 rise 2
+            server mdclab-k8s-master-1 10.0.1.22:30080 check fall 3 rise 2
+            server mdclab-k8s-master-2 10.0.1.23:30080 check fall 3 rise 2
+
+    frontend kubernetes-apps-https
+            bind 10.0.1.20:443
+            option tcplog
+            mode tcp
+            default_backend kubernetes-master-nodes-apps-https
+
+backend kubernetes-master-nodes-apps-https
+        mode tcp
+        balance roundrobin
+        option ssl-hello-chk
+
+        server mdclab-k8s-master-0 10.0.1.21:30443 check
+        server mdclab-k8s-master-1 10.0.1.22:30443 check
+        server mdclab-k8s-master-2 10.0.1.23:30443 check
+
+
+
+
+
+#### BORRADO ####
+
+1. Quitar config
+
+    kubectl  --kubeconfig ~/terraform-vsphere-kubespray/config/admin.conf delete namespace nginx-ingress
+
+
+2. Quitar config del HAProxy
+
+    Borrar esa parte del haproxy

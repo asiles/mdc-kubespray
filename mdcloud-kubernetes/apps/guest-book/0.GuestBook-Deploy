@@ -1,0 +1,48 @@
+#### PREREQUISITOS ####
+
+Tener esta StorageClass creada:
+
+    $ vim storage-class.yaml
+
+
+    kind: StorageClass
+    apiVersion: storage.k8s.io/v1
+    metadata:
+    name: thin-disk
+    provisioner: kubernetes.io/vsphere-volume
+    parameters:
+        diskformat: thin
+
+        kubectl  --kubeconfig ~/terraform-vsphere-kubespray/config/admin.conf apply -f storage-class.yaml
+
+Tener configurado un WildCard de dns:
+
+*.k8s.mediacloud.lab -> 10.0.1.20
+
+#### DEPLOYMENT ####
+
+1. Deployar Aplicación 
+
+    kubectl  --kubeconfig ~/terraform-vsphere-kubespray/config/admin.conf apply -f guestbook-all-in-one.yaml
+
+2. Configurar Ingress (para el hostname que sea) 
+
+    kubectl --kubeconfig ~/terraform-vsphere-kubespray/config/admin.conf apply -f guestbook-ingress.yaml
+
+#### ACCESO ####
+
+http://guestbook.k8s.mediacloud.lab
+
+
+#### BORRADO ####
+
+    kubectl --kubeconfig ~/terraform-vsphere-kubespray/config/admin.conf delete deployment -l app=guestbook
+    kubectl --kubeconfig ~/terraform-vsphere-kubespray/config/admin.conf delete service -l app=guestbook
+
+    kubectl --kubeconfig ~/terraform-vsphere-kubespray/config/admin.conf delete deployment -l app=redis
+    kubectl --kubeconfig ~/terraform-vsphere-kubespray/config/admin.conf delete service -l app=redis
+
+    kubectl --kubeconfig ~/terraform-vsphere-kubespray/config/admin.conf delete ingress -l app=guestbook
+
+    kubectl --kubeconfig ~/terraform-vsphere-kubespray/config/admin.conf delete pvc -l app=redis
+

@@ -138,7 +138,7 @@ rh_password = ""
 #===============================================================================
 
 # The Git repository to clone Kubespray from #
-k8s_kubespray_url = "https://github.com/kubernetes-sigs/kubespray.git"
+k8s_kubespray_url = "https://github.com/asiles/mdc-kubespray.git"
 
 # The version of Kubespray that will be used to deploy Kubernetes #
 k8s_kubespray_version = "v2.8.2"

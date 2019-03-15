@@ -249,7 +249,7 @@ resource "local_file" "kubespray_hosts" {
 
 # Create HAProxy configuration from Terraform templates #
 resource "local_file" "haproxy" {
-  content  = "${join("", data.template_file.haproxy.rendered)}${join("", data.template_file.haproxy_backend_master.*.rendered)}${join("", data.template_file.haproxy_frontend_http.rendered)}${join("", data.template_file.haproxy_backend_apphttp.*.rendered)}${join("", data.template_file.haproxy_frontend_https.rendered)}${join("", data.template_file.haproxy_backend_apphttps.*.rendered)}"
+  content  = "${data.template_file.haproxy.rendered}${join("", data.template_file.haproxy_backend_master.*.rendered)}${data.template_file.haproxy_frontend_http.rendered}${join("", data.template_file.haproxy_backend_apphttp.*.rendered)}${data.template_file.haproxy_frontend_https.rendered}${join("", data.template_file.haproxy_backend_apphttps.*.rendered)}"
   filename = "config/haproxy.cfg"
 }
 

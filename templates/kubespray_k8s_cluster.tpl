@@ -113,10 +113,10 @@ kube_encrypt_secret_data: false
 
 # DNS configuration.
 # Kubernetes cluster name, also will be used as DNS domain
-##### MODIFICADO ASILES 15/03 #####
+##### MODIFICADO ASILES 15/03 ####g#
 #cluster_name: cluster.local
 #################################
-cluster_name:${cluster_name}
+cluster_name: ${cluster_name}
 # Subdomains of DNS domain to be resolved via /etc/resolv.conf for hostnet pods
 ndots: 2
 # Can be dnsmasq_kubedns, kubedns, coredns, coredns_dual, manual or none

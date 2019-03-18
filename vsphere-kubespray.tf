@@ -351,7 +351,7 @@ resource "null_resource" "kubespray_add" {
   count = "${var.action == "add_worker" ? 1 : 0}"
 
   provisioner "local-exec" {
-    command = "cd mdc-ansible/mdc-kubespray && ansible-playbook -i ../../config/hosts.ini -b -u ${var.vm_user} -e 'ansible_ssh_pass=${var.vm_password} ansible_become_pass=${var.vm_privilege_password} kube_version=${var.k8s_version}' ${lookup(local.extra_args, var.vm_distro)} -v scale.yml"
+    command = "cd ansible/kubespray && ansible-playbook -i ../../config/hosts.ini -b -u ${var.vm_user} -e 'ansible_ssh_pass=${var.vm_password} ansible_become_pass=${var.vm_privilege_password} kube_version=${var.k8s_version}' ${lookup(local.extra_args, var.vm_distro)} -v scale.yml"
   }
 
   depends_on = ["local_file.kubespray_hosts", "null_resource.kubespray_download", "local_file.kubespray_all", "local_file.kubespray_k8s_cluster", "null_resource.haproxy_install", "vsphere_virtual_machine.haproxy", "vsphere_virtual_machine.worker", "vsphere_virtual_machine.master"]
@@ -362,7 +362,7 @@ resource "null_resource" "kubespray_upgrade" {
   count = "${var.action == "upgrade" ? 1 : 0}"
 
   provisioner "local-exec" {
-    command = "cd ansible/mdc-kubespray && ansible-playbook -i ../../config/hosts.ini -b -u ${var.vm_user} -e 'ansible_ssh_pass=${var.vm_password} ansible_become_pass=${var.vm_privilege_password} kube_version=${var.k8s_version}' ${lookup(local.extra_args, var.vm_distro)} -v upgrade-cluster.yml"
+    command = "cd ansible/kubespray && ansible-playbook -i ../../config/hosts.ini -b -u ${var.vm_user} -e 'ansible_ssh_pass=${var.vm_password} ansible_become_pass=${var.vm_privilege_password} kube_version=${var.k8s_version}' ${lookup(local.extra_args, var.vm_distro)} -v upgrade-cluster.yml"
   }
 
   depends_on = ["local_file.kubespray_hosts", "null_resource.kubespray_download", "local_file.kubespray_all", "local_file.kubespray_k8s_cluster", "null_resource.haproxy_install", "vsphere_virtual_machine.haproxy", "vsphere_virtual_machine.worker", "vsphere_virtual_machine.master"]
@@ -516,7 +516,7 @@ resource "vsphere_virtual_machine" "worker" {
 
   provisioner "local-exec" {
     when    = "destroy"
-    command = "cd ansible/mdc-kubespray && ansible-playbook -i ../config/hosts_remove_${count.index}.ini -b -u ${var.vm_user} -e 'ansible_ssh_pass=${var.vm_password} ansible_become_pass=${var.vm_privilege_password} delete_nodes_confirmation=yes' -v remove-node.yml"
+    command = "cd ansible/kubespray && ansible-playbook -i ../config/hosts_remove_${count.index}.ini -b -u ${var.vm_user} -e 'ansible_ssh_pass=${var.vm_password} ansible_become_pass=${var.vm_privilege_password} delete_nodes_confirmation=yes' -v remove-node.yml"
   }
 
   provisioner "local-exec" {

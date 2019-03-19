@@ -177,7 +177,7 @@ roleRef:
   kind: ClusterRole
   name: nginx-ingress
   apiGroup: rbac.authorization.k8s.io
-
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:

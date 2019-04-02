@@ -49,13 +49,16 @@ vm_folder = "2. VMs/kubernetes/JK_VM_FOLDER"
 vm_datastore = "shared-sata-01"
 
 # The vSphere network name used by the virtual machines #
-vm_network = "WL-Net01"
+#vm_network = "WL-Net01"
+
+vm_network = "vxw-dvs-366-virtualwire-2-sid-5001-TEST-LS"
 
 # The netmask used to configure the network cards of the virtual machines (example: 24)#
 vm_netmask = "24"
 
 # The network gateway used by the virtual machines #
-vm_gateway = "10.0.1.1"
+#vm_gateway = "10.0.1.1"
+vm_gateway = "10.10.1.1"
 
 # The DNS server used by the virtual machines #
 vm_dns = "192.168.2.10"
